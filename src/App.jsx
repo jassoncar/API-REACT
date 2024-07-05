@@ -16,6 +16,7 @@ const App = () => {
   const [selectedUser, setSelectedUser] = useState(null);
   const [isCompact, setIsCompact] = useState(true);
   const [showEditModal, setShowEditModal] = useState(false);
+  const [filter, setFilter] = useState(""); // Estado del filtro
 
   const handleDelete = (user) => {
     setSelectedUser(user);
@@ -52,18 +53,51 @@ const App = () => {
     setIsCompact(!isCompact);
   };
 
-  const filteredUsers = handleFilterSubmit(users);
+  const handleFilterChange = (event) => {
+    setFilter(event.target.value);
+  };
+
+  // Lógica de filtrado
+  const filteredUsers = users.filter((user) => {
+    const fullName = `${user.name.first} ${user.name.last}`;
+    const country = user.location.country;
+    const email = user.email;
+    const age = user.dob.age.toString();
+    const birthdate = user.dob.date;
+    const gender = user.gender;
+
+    return (
+      fullName.toLowerCase().includes(filter.toLowerCase()) ||
+      country.toLowerCase().includes(filter.toLowerCase()) ||
+      email.toLowerCase().includes(filter.toLowerCase()) ||
+      age.includes(filter) ||
+      birthdate.includes(filter) ||
+      gender.toLowerCase().includes(filter.toLowerCase())
+    );
+  });
 
   return (
     <div className="container">
-      <h1>Listado de Usuarios</h1>
+      <h1 className="text-center">USERS</h1>
 
       <div className="d-flex justify-content-between align-items-center mb-3">
-        <Button onClick={() => setShowColumnModal(true)}>Seleccionar Columnas</Button>
-        <Button onClick={handleCompactToggle}>
+        {isCompact && (
+          <Button variant="outline-primary" onClick={() => setShowColumnModal(true)}>
+            Seleccionar Columnas
+          </Button>
+        )}
+        <Button variant="outline-info" onClick={handleCompactToggle}>
           {isCompact ? "Versión Expandida" : "Versión Compacta"}
         </Button>
       </div>
+
+      <input
+        type="text"
+        className="form-control mb-3"
+        placeholder="Filtrar usuarios..."
+        value={filter}
+        onChange={handleFilterChange}
+      />
 
       <TableComponent
         users={filteredUsers}

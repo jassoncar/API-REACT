@@ -3,7 +3,7 @@ import { Table, Button } from "react-bootstrap";
 
 const TableComponent = ({ users, isCompact, handleDelete, handleEdit, selectedColumns }) => {
   return (
-    <Table striped bordered hover>
+    <Table striped bordered hover variant="secondary">
       <thead>
         <tr>
           <th>Nombre</th>
@@ -36,12 +36,12 @@ const TableComponent = ({ users, isCompact, handleDelete, handleEdit, selectedCo
               </td>
             )}
             <td>
-              <Button variant="danger" onClick={() => handleDelete(user)}>
+              <Button variant="outline-danger" onClick={() => handleDelete(user)}>
                 Eliminar
               </Button>
             </td>
             <td>
-              <Button variant="primary" onClick={() => handleEdit(user)}>
+              <Button variant="outline-dark" onClick={() => handleEdit(user)}>
                 Editar
               </Button>
             </td>
